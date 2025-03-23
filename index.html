@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is It My Birthday?</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            transition: all 0.5s;
+        }
+        .container {
+            margin-top: 20vh;
+        }
+        .question {
+            font-size: 2em;
+        }
+        .answer {
+            font-size: 5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        @keyframes colorFade {
+            0% { background-color: #ffcc00; }
+            25% { background-color: #ff6699; }
+            50% { background-color: #66ccff; }
+            75% { background-color: #66ff66; }
+            100% { background-color: #ffcc00; }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const birthdayMonth = 3; // Set your birthday month (1-12)
+            const birthdayDay = 23; // Set your birthday day (1-31)
+            const today = new Date();
+            const isBirthday = (today.getMonth() + 1 === birthdayMonth) && (today.getDate() === birthdayDay);
+            
+            console.log("Today's date:", today.toDateString());
+            console.log("Birthday Match:", isBirthday);
+            
+            const body = document.body;
+            const answer = document.getElementById("answer");
+            
+            if (isBirthday) {
+                body.style.animation = "colorFade 5s infinite alternate";
+                body.style.color = "#ff0066";
+                body.style.fontFamily = "Comic Sans MS, cursive";
+                answer.textContent = "YES!";
+                document.title = "YES! 🎉";
+                document.body.innerHTML += "<div style='font-size:3em;'>🎉🎈🎊</div>";
+            } else {
+                body.style.backgroundColor = "#888";
+                body.style.color = "#000";
+                answer.textContent = "NO.";
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="question">Is it my birthday?</div>
+        <div id="answer" class="answer"></div>
+    </div>
+</body>
+</html>
