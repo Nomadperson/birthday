@@ -12,54 +12,71 @@
             box-sizing: border-box;
         }
 
-        /* Page container */
+        /* Body and background styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffebcd;
+            background-color: #f9f9f9; /* Very light grey */
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             flex-direction: column;
             text-align: center;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .container {
-            position: relative;
-        }
-
-        .error-message {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #333;
-            transition: transform 0.2s ease;
-        }
-
-        .error-message h1 {
-            font-size: 4rem;
-        }
-
-        .slider-container {
+        /* Menu in the top corner */
+        .menu {
             position: absolute;
             top: 10px;
-            right: 10px;
+            left: 10px;
             z-index: 2;
+        }
+
+        .menu label {
+            font-size: 1.2rem;
+            color: #333;
+            margin-right: 10px;
         }
 
         input[type="range"] {
             width: 200px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            transition: background 0.2s;
+        }
+
+        input[type="range"]:hover {
+            background: #bbb;
+        }
+
+        input[type="range"]:focus {
+            background: #888;
+        }
+
+        /* Centered error message */
+        .error-message {
+            font-size: 6rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .error-message h1 {
+            font-size: 8rem;
         }
 
         .crazy-effects {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             font-size: 2rem;
             color: #ff1493;
             font-weight: bold;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
             pointer-events: none;
         }
 
@@ -67,35 +84,29 @@
         .crazy {
             color: #ff6347;
             font-size: 5rem;
-            animation: shake 0.5s infinite;
+            transform: scale(1.5) rotate(5deg);
+            animation: bounce 0.5s infinite;
         }
 
-        @keyframes shake {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(10deg); }
-            50% { transform: rotate(0deg); }
-            75% { transform: rotate(-10deg); }
-            100% { transform: rotate(0deg); }
+        @keyframes bounce {
+            0% { transform: scale(1.5) rotate(5deg); }
+            50% { transform: scale(1.2) rotate(-5deg); }
+            100% { transform: scale(1.5) rotate(5deg); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="slider-container">
-            <input type="range" id="crazySlider" min="1" max="100" value="1" step="1" />
-            <label for="crazySlider">Make it crazy!</label>
-        </div>
-        
-        <div id="error-message" class="error-message">
-            <h1>404 - Page Not Found</h1>
-            <p>Uh-oh! Looks like you're lost.</p>
-            <p id="random-message"></p>
-        </div>
-
-        <div class="crazy-effects">
-            <p id="crazy-text"></p>
-        </div>
+    <div class="menu">
+        <label for="crazySlider">Make it crazy!</label>
+        <input type="range" id="crazySlider" min="1" max="100" value="1" step="1" />
     </div>
+    
+    <div class="error-message">
+        <h1 id="errorCode">404</h1>
+        <p id="errorText">Page Not Found</p>
+    </div>
+
+    <div class="crazy-effects" id="crazy-text"></div>
 
     <script>
         // Random messages for the 404 page
@@ -117,35 +128,42 @@
         }
 
         // Display the random message
-        document.getElementById('random-message').innerText = getRandomMessage();
+        const errorText = document.getElementById('errorText');
+        const crazyText = document.getElementById('crazy-text');
 
         // Slider functionality to make things crazy
         const slider = document.getElementById('crazySlider');
-        const errorMessage = document.getElementById('error-message');
-        const crazyText = document.getElementById('crazy-text');
+        const errorMessage = document.getElementById('errorCode');
 
-        // Update crazy effect based on slider value
         slider.addEventListener('input', function() {
             const sliderValue = slider.value;
-            
-            // Increase craziness based on slider value
-            if (sliderValue > 50) {
-                errorMessage.classList.add('crazy');
-                crazyText.classList.add('crazy');
-                crazyText.innerText = "CRAZY MODE: 404!";
-            } else {
+
+            // For the least crazy option (slider value 1)
+            if (sliderValue == 1) {
                 errorMessage.classList.remove('crazy');
-                crazyText.classList.remove('crazy');
-                crazyText.innerText = "";
+                errorText.innerText = "Page Not Found"; // Default message
+                document.body.style.backgroundColor = "#f9f9f9"; // Default background color
+                errorText.style.color = "#333"; // Default text color
+                crazyText.innerText = ""; // No crazy text
             }
 
-            // Make it even wilder at max slider value
-            if (sliderValue == 100) {
-                document.body.style.backgroundColor = "#ff6347";
-                errorMessage.style.color = "yellow";
-            } else {
-                document.body.style.backgroundColor = "#ffebcd";
-                errorMessage.style.color = "#333";
+            // Apply craziness if slider is above 1
+            else {
+                errorMessage.classList.add('crazy');
+                errorText.innerText = getRandomMessage(); // Random 404 message
+
+                // Crazy effects based on slider value
+                if (sliderValue > 50) {
+                    crazyText.classList.add('crazy');
+                    crazyText.innerText = "CRAZY MODE: 404!";
+                    document.body.style.backgroundColor = "#ff6347"; // Change background to crazy color
+                    errorText.style.color = "yellow"; // Text becomes yellow in crazy mode
+                } else {
+                    crazyText.classList.remove('crazy');
+                    crazyText.innerText = "";
+                    document.body.style.backgroundColor = "#f9f9f9"; // Return to the default background
+                    errorText.style.color = "#333"; // Return to default color
+                }
             }
         });
     </script>
