@@ -3,64 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Is It My Birthday?</title>
+    <title>Random 404 Page</title>
     <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Page container */
         body {
-            text-align: center;
             font-family: Arial, sans-serif;
-            transition: all 0.5s;
+            background-color: #ffebcd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
         }
+
         .container {
-            margin-top: 20vh;
+            position: relative;
         }
-        .question {
-            font-size: 2em;
-        }
-        .answer {
-            font-size: 5em;
+
+        .error-message {
+            font-size: 3rem;
             font-weight: bold;
-            margin-top: 20px;
+            margin-bottom: 20px;
+            color: #333;
+            transition: transform 0.2s ease;
         }
-        @keyframes colorFade {
-            0% { background-color: #ffcc00; }
-            25% { background-color: #ff6699; }
-            50% { background-color: #66ccff; }
-            75% { background-color: #66ff66; }
-            100% { background-color: #ffcc00; }
+
+        .error-message h1 {
+            font-size: 4rem;
+        }
+
+        .slider-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+        }
+
+        input[type="range"] {
+            width: 200px;
+        }
+
+        .crazy-effects {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: #ff1493;
+            font-weight: bold;
+            transition: all 0.2s ease-in-out;
+            pointer-events: none;
+        }
+
+        /* Additional crazy styles */
+        .crazy {
+            color: #ff6347;
+            font-size: 5rem;
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-10deg); }
+            100% { transform: rotate(0deg); }
         }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const birthdayMonth = 3; // Set your birthday month (1-12)
-            const birthdayDay = 23; // Set your birthday day (1-31)
-            const today = new Date();
-            const isBirthday = (today.getMonth() + 1 === birthdayMonth) && (today.getDate() === birthdayDay);
-            
-            console.log("Today's date:", today.toDateString());
-            console.log("Birthday Match:", isBirthday);
-            
-            const body = document.body;
-            const answer = document.getElementById("answer");
-            
-            if (isBirthday) {
-                body.style.animation = "colorFade 5s infinite alternate";
-                body.style.color = "#ff0066";
-                body.style.fontFamily = "Comic Sans MS, cursive";
-                answer.textContent = "YES!";
-                document.title = "YES! 🎉";
-                document.body.innerHTML += "<div style='font-size:3em;'>🎉🎈🎊</div>";
-            } else {
-                body.style.backgroundColor = "#888";
-                body.style.color = "#000";
-                answer.textContent = "NO.";
-            }
-        });
-    </script>
 </head>
 <body>
     <div class="container">
-        <div class="question">Is it my birthday?</div>
-        <div id="answer" class="answer"></div>
+        <div class="slider-container">
+            <input type="range" id="crazySlider" min="1" max="100" value="1" step="1" />
+            <label for="crazySlider">Make it crazy!</label>
+        </div>
+        
+        <div id="error-message" class="error-message">
+            <h1>404 - Page Not Found</h1>
+            <p>Uh-oh! Looks like you're lost.</p>
+            <p id="random-message"></p>
+        </div>
+
+        <div class="crazy-effects">
+            <p id="crazy-text"></p>
+        </div>
     </div>
+
+    <script>
+        // Random messages for the 404 page
+        const randomMessages = [
+            "You are now in a parallel universe.",
+            "Did you try turning it off and on again?",
+            "The unicorns stole your page.",
+            "You’ve crossed the line. This page is gone!",
+            "404: Error in your existence.",
+            "Looks like this page was eaten by a monster.",
+            "Oops, the page went on a vacation!",
+            "404: Page went out for coffee."
+        ];
+
+        // Function to pick a random message
+        function getRandomMessage() {
+            const randomIndex = Math.floor(Math.random() * randomMessages.length);
+            return randomMessages[randomIndex];
+        }
+
+        // Display the random message
+        document.getElementById('random-message').innerText = getRandomMessage();
+
+        // Slider functionality to make things crazy
+        const slider = document.getElementById('crazySlider');
+        const errorMessage = document.getElementById('error-message');
+        const crazyText = document.getElementById('crazy-text');
+
+        // Update crazy effect based on slider value
+        slider.addEventListener('input', function() {
+            const sliderValue = slider.value;
+            
+            // Increase craziness based on slider value
+            if (sliderValue > 50) {
+                errorMessage.classList.add('crazy');
+                crazyText.classList.add('crazy');
+                crazyText.innerText = "CRAZY MODE: 404!";
+            } else {
+                errorMessage.classList.remove('crazy');
+                crazyText.classList.remove('crazy');
+                crazyText.innerText = "";
+            }
+
+            // Make it even wilder at max slider value
+            if (sliderValue == 100) {
+                document.body.style.backgroundColor = "#ff6347";
+                errorMessage.style.color = "yellow";
+            } else {
+                document.body.style.backgroundColor = "#ffebcd";
+                errorMessage.style.color = "#333";
+            }
+        });
+    </script>
 </body>
 </html>
