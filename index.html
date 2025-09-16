@@ -3,169 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random 404 Page</title>
+    <title>Is It My Birthday?</title>
     <style>
-        /* Reset styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Body and background styling */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9; /* Very light grey */
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
             text-align: center;
-            overflow: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: Arial, sans-serif;
+            transition: all 0.5s;
         }
-
-        /* Menu in the top corner */
-        .menu {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 2;
+        .container {
+            margin-top: 20vh;
         }
-
-        .menu label {
-            font-size: 1.2rem;
-            color: #333;
-            margin-right: 10px;
+        .question {
+            font-size: 2em;
         }
-
-        input[type="range"] {
-            width: 200px;
-            -webkit-appearance: none;
-            appearance: none;
-            height: 8px;
-            border-radius: 5px;
-            background: #ddd;
-            outline: none;
-            transition: background 0.2s;
-        }
-
-        input[type="range"]:hover {
-            background: #bbb;
-        }
-
-        input[type="range"]:focus {
-            background: #888;
-        }
-
-        /* Centered error message */
-        .error-message {
-            font-size: 6rem;
+        .answer {
+            font-size: 5em;
             font-weight: bold;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
+            margin-top: 20px;
         }
-
-        .error-message h1 {
-            font-size: 8rem;
-        }
-
-        .crazy-effects {
-            font-size: 2rem;
-            color: #ff1493;
-            font-weight: bold;
-            transition: all 0.3s ease-in-out;
-            pointer-events: none;
-        }
-
-        /* Additional crazy styles */
-        .crazy {
-            color: #ff6347;
-            font-size: 5rem;
-            transform: scale(1.5) rotate(5deg);
-            animation: bounce 0.5s infinite;
-        }
-
-        @keyframes bounce {
-            0% { transform: scale(1.5) rotate(5deg); }
-            50% { transform: scale(1.2) rotate(-5deg); }
-            100% { transform: scale(1.5) rotate(5deg); }
+        @keyframes colorFade {
+            0% { background-color: #ffcc00; }
+            25% { background-color: #ff6699; }
+            50% { background-color: #66ccff; }
+            75% { background-color: #66ff66; }
+            100% { background-color: #ffcc00; }
         }
     </style>
-</head>
-<body>
-    <div class="menu">
-        <label for="crazySlider">Make it crazy!</label>
-        <input type="range" id="crazySlider" min="1" max="100" value="1" step="1" />
-    </div>
-    
-    <div class="error-message">
-        <h1 id="errorCode">404</h1>
-        <p id="errorText">Page Not Found</p>
-    </div>
-
-    <div class="crazy-effects" id="crazy-text"></div>
-
     <script>
-        // Random messages for the 404 page
-        const randomMessages = [
-            "You are now in a parallel universe.",
-            "Did you try turning it off and on again?",
-            "The unicorns stole your page.",
-            "You’ve crossed the line. This page is gone!",
-            "404: Error in your existence.",
-            "Looks like this page was eaten by a monster.",
-            "Oops, the page went on a vacation!",
-            "404: Page went out for coffee."
-        ];
+        document.addEventListener("DOMContentLoaded", function() {
+            const birthdayMonth = 6; // Set your birthday month (1-12)
+            const birthdayDay = 3; // Set your birthday day (1-31)
+            const birthdayMonth = 3; // Set your birthday month (1-12)
+            const birthdayDay = 23; // Set your birthday day (1-31)
+            const today = new Date();
+            const isBirthday = (today.getMonth() + 1 === birthdayMonth) && (today.getDate() === birthdayDay);
 
-        // Function to pick a random message
-        function getRandomMessage() {
-            const randomIndex = Math.floor(Math.random() * randomMessages.length);
-            return randomMessages[randomIndex];
-        }
+            console.log("Today's date:", today.toDateString());
+            console.log("Birthday Match:", isBirthday);
 
-        // Display the random message
-        const errorText = document.getElementById('errorText');
-        const crazyText = document.getElementById('crazy-text');
+            const body = document.body;
+            const answer = document.getElementById("answer");
 
-        // Slider functionality to make things crazy
-        const slider = document.getElementById('crazySlider');
-        const errorMessage = document.getElementById('errorCode');
-
-        slider.addEventListener('input', function() {
-            const sliderValue = slider.value;
-
-            // For the least crazy option (slider value 1)
-            if (sliderValue == 1) {
-                errorMessage.classList.remove('crazy');
-                errorText.innerText = "Page Not Found"; // Default message
-                document.body.style.backgroundColor = "#f9f9f9"; // Default background color
-                errorText.style.color = "#333"; // Default text color
-                crazyText.innerText = ""; // No crazy text
-            }
-
-            // Apply craziness if slider is above 1
-            else {
-                errorMessage.classList.add('crazy');
-                errorText.innerText = getRandomMessage(); // Random 404 message
-
-                // Crazy effects based on slider value
-                if (sliderValue > 50) {
-                    crazyText.classList.add('crazy');
-                    crazyText.innerText = "CRAZY MODE: 404!";
-                    document.body.style.backgroundColor = "#ff6347"; // Change background to crazy color
-                    errorText.style.color = "yellow"; // Text becomes yellow in crazy mode
-                } else {
-                    crazyText.classList.remove('crazy');
-                    crazyText.innerText = "";
-                    document.body.style.backgroundColor = "#f9f9f9"; // Return to the default background
-                    errorText.style.color = "#333"; // Return to default color
-                }
+            if (isBirthday) {
+                body.style.animation = "colorFade 5s infinite alternate";
+                body.style.color = "#ff0066";
+                body.style.fontFamily = "Comic Sans MS, cursive";
+                answer.textContent = "YES!";
+                document.title = "YES! 🎉";
+                document.body.innerHTML += "<div style='font-size:3em;'>🎉🎈🎊</div>";
+            } else {
+                body.style.backgroundColor = "#888";
+                body.style.color = "#000";
+                answer.textContent = "NO.";
             }
         });
     </script>
+</head>
+<body>
+    <div class="container">
+        <div class="question">Is it my birthday?</div>
+        <div id="answer" class="answer"></div>
+    </div>
 </body>
 </html>
